@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #000;
+            color: #fff;
+        }
+
+        #photo-container {
+            width: 500px;
+            height: 500px;
+            overflow: hidden;
+            position: relative;
+            border: 10px solid #82ccaa; /* Bordure apaisante en vert pastel */
+            border-radius: 15px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        #photo-list {
+            display: flex;
+            transition: transform 1s ease-in-out;
+        }
+
+        .photo {
+            width: 500px;
+            height: 500px;
+            flex-shrink: 0;
+        }
+
+        #prev-btn, #next-btn, #vote-btn {
+            position: absolute;
+            cursor: pointer;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        #prev-btn, #next-btn {
+            top: 50%;
+            color: #fff;
+            padding: 8px 12px;
+            background-color: #82ccaa; /* Vert pastel */
+        }
+
+        #prev-btn:hover, #next-btn:hover {
+            background-color: #5a9c7e; /* Vert pastel plus foncé  */
+        }
+
+        #prev-btn {
+            left: 10px;
+        }
+
+        #next-btn {
+            right: 10px;
+        }
+
+        #vote-btn {
+            top: 80%;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            padding: 10px 20px;
+            background-color: #82ccaa; /* Vert pastel */
+        }
+
+        #vote-btn:hover {
+            background-color: #5a9c7e; /* Vert pastel plus foncé */
+        }
+    </style>
+</head>
+<body>
+    <div id="photo-container">
+        <div id="photo-list">
+            <img class="photo" src="image1.jpg" alt="Photo 1">
+            <img class="photo" src="image2.jpg" alt="Photo 2">
+            <img class="photo" src="image3.jpg" alt="Photo 3">
+            <img class="photo" src="image4.jpg" alt="Photo 4">
+            <img class="photo" src="image5.jpg" alt="Photo 5">
+            <img class="photo" src="image6.jpg" alt="Photo 6">
+            <img class="photo" src="image7.jpg" alt="Photo 7">
+            <img class="photo" src="image8.jpg" alt="Photo 8">
+            <img class="photo" src="image9.jpg" alt="Photo 9">
+            <img class="photo" src="image10.jpg" alt="Photo 10">
+        </div>
+        <button id="prev-btn" onclick="prevPhoto()">Précédente</button>
+        <button id="next-btn" onclick="nextPhoto()">Suivante</button>
+        <button id="vote-btn" onclick="vote()">Voter pour cette photo</button>
+    </div>
+
+    <script>
+        const photoContainer = document.getElementById('photo-container');
+        const photoList = document.getElementById('photo-list');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const voteBtn = document.getElementById('vote-btn');
+
+        let currentIndex = 0;
+
+        function prevPhoto() {
+            currentIndex = (currentIndex - 1 + photoList.children.length) % photoList.children.length;
+            updatePhotoList();
+        }
+
+        function nextPhoto() {
+            currentIndex = (currentIndex + 1) % photoList.children.length;
+            updatePhotoList();
+        }
+
+        function updatePhotoList() {
+            const newPosition = -currentIndex * photoContainer.clientWidth;
+            photoList.style.transform = `translateX(${newPosition}px)`;
+        }
+
+        function vote() {
+            // Simule l'envoi d'un vote au serveur (fictif)
+            const photoId = currentIndex + 1;
+            console.log(`Voté pour la photo ${photoId}`);
+        }
+    </script>
+</body>
+</html>
+
+#Serveur 
+# coding: utf-8
+
+import socket
+
+# Renommez la variable pour éviter les conflits
+server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server_socket.bind(('192.168.56.1', 9090))
+
+while True:
+    server_socket.listen(5)
+    client, address = server_socket.accept()
+    print("{} connected".format(address))
+
+    response = client.recv(255)
+    if response:
+        print(response.decode('utf-8'))
+
+    # Fermez la connexion avec le client
+    client.close()
+
+# Fermez la socket serveur (cela ne sera pas atteint dans votre cas actuel)
+server_socket.close()
+
+#Client 
+# coding: utf-8
+
+import socket
+
+hote = "192.168.56.1"
+port = 9090
+
+client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client_socket.connect((hote, port))
+print("Connection on {}".format(port))
+
+# Encodez la chaîne avant de l'envoyer
+message = "Msg recue!".encode('utf-8')
+client_socket.send(message)
+
+print("Ferme")
+client_socket.close()
