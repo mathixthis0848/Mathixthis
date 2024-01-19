@@ -135,40 +135,47 @@
 
 import socket
 
-# Renommez la variable pour éviter les conflits
+# Créer une socket
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server_socket.bind(('192.168.56.1', 9090))
+
+# Lier la socket à une adresse IP et un port
+server_socket.bind(('192.168.97.255', 9142))
+
+# Mettre la socket en mode écoute
+server_socket.listen(5)
+print("Le serveur ecoute sur le port 9142...")
 
 while True:
-    server_socket.listen(5)
+    # Accepter la connexion du client
     client, address = server_socket.accept()
     print("{} connected".format(address))
 
-    response = client.recv(255)
-    if response:
-        print(response.decode('utf-8'))
+    try:
+        # Recevoir des données du client
+        response = client.recv(1024)
+        if response:
+            print(response.decode('utf-8'))
+    except socket.error as e:
+        print("Erreur lors de la réception des données:", e)
+    finally:
+        # Fermer la connexion avec le client
+        client.close()
 
-    # Fermez la connexion avec le client
-    client.close()
-
-# Fermez la socket serveur (cela ne sera pas atteint dans votre cas actuel)
-server_socket.close()
-
+        
 #Client 
 # coding: utf-8
 
 import socket
 
-hote = "192.168.56.1"
-port = 9090
+hote = "192.168.97.255"
+port = 9142
 
-client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client_socket.connect((hote, port))
-print("Connection on {}".format(port))
 
-# Encodez la chaîne avant de l'envoyer
-message = "Msg recue!".encode('utf-8')
-client_socket.send(message)
+socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+socket.connect((hote, port))
+print ("Connection on {}".format(port))
 
-print("Ferme")
-client_socket.close()
+socket.send("Msg reçu")
+
+print ("Ferme")
+socket.close()
