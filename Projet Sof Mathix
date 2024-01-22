@@ -188,7 +188,7 @@
 </html>
 
 
-
+#SERVEUR
 # coding: utf-8
 
 import socket
@@ -227,32 +227,25 @@ finally:
     # Fermer la socket du serveur
     server_socket.close()
 
-        
-#Client 
-# coding: utf-8
-
+#CHAT        
 # coding: utf-8
 #!/usr/bin/env python3
 
-
 import socket
 
-# Créer une socket
-client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+def send_message(message):
+    try:
+        # Connexion au serveur
+        with socket.create_connection(('192.168.97.255', 9142)) as client_socket:
+            print("Connecté au serveur.")
 
-# Adresse et port du serveur auquel se connecter
-server_address = ('192.168.97.255', 9142)
+            # Envoyer des données au serveur
+            client_socket.sendall(message.encode('utf-8'))
+            print("Message envoyé avec succès.")
 
-try:
-    # Connexion au serveur
-    client_socket.connect(server_address)
-    print("Connecté au serveur.")
+    except ConnectionError as e:
+        print("Erreur de connexion au serveur:", e)
 
-    # Envoyer des données au serveur
-    message = "Hello, serveur!"
-    client_socket.sendall(message.encode('utf-8'))
-
-finally:
-    # Fermer la connexion avec le serveur
-    client_socket.close()
-    print("Déconnexion du serveur.")
+if __name__ == "__main__":
+    message_to_send = "Hello, serveur!"
+    send_message(message_to_send)
