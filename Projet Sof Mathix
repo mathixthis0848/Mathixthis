@@ -16,8 +16,8 @@
         }
 
         #photo-container {
-            width: 500px;
-            height: 500px;
+            width: 300px;
+            height: 300px;
             overflow: hidden;
             position: relative;
             border: 10px solid #82ccaa; /* Bordure apaisante en vert pastel */
@@ -31,8 +31,8 @@
         }
 
         .photo {
-            width: 500px;
-            height: 500px;
+            width: 300px;
+            height: 300px;
             flex-shrink: 0;
         }
 
@@ -53,7 +53,7 @@
         }
 
         #prev-btn:hover, #next-btn:hover {
-            background-color: #5a9c7e; /* Vert pastel plus foncé  */
+            background-color: #5a9c7e; /* Vert pastel plus foncé au survol */
         }
 
         #prev-btn {
@@ -74,7 +74,36 @@
         }
 
         #vote-btn:hover {
-            background-color: #5a9c7e; /* Vert pastel plus foncé */
+            background-color: #5a9c7e; /* Vert pastel plus foncé au survol */
+        }
+
+        /* Styles pour le modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #000;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: #fff;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -94,7 +123,22 @@
         </div>
         <button id="prev-btn" onclick="prevPhoto()">Précédente</button>
         <button id="next-btn" onclick="nextPhoto()">Suivante</button>
-        <button id="vote-btn" onclick="vote()">Voter pour cette photo</button>
+        <button id="vote-btn" onclick="showVoteOptions()">Voter pour cette photo</button>
+
+        <!-- Ajout du modal dans le conteneur photo-container -->
+        <div id="vote-modal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeVoteModal()">&times;</span>
+                <h2>Choisissez une personne</h2>
+                <select id="vote-options">
+                    <option value="person1">Personne 1</option>
+                    <option value="person2">Personne 2</option>
+                    <option value="person3">Personne 3</option>
+                    <!-- Ajoutez d'autres options si nécessaire -->
+                </select>
+                <button onclick="vote()">Voter</button>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -121,14 +165,29 @@
             photoList.style.transform = `translateX(${newPosition}px)`;
         }
 
+        function showVoteOptions() {
+            // Afficher la boîte de dialogue (modal)
+            document.getElementById('vote-modal').style.display = 'block';
+            // Masquer le bouton "Voter pour cette photo"
+            document.getElementById('vote-btn').style.display = 'none';
+        }
+
+        function closeVoteModal() {
+            // Fermer la boîte de dialogue (modal)
+            document.getElementById('vote-modal').style.display = 'none';
+            // Afficher à nouveau le bouton "Voter pour cette photo"
+            document.getElementById('vote-btn').style.display = 'block';
+        }
+
         function vote() {
-            // Simule l'envoi d'un vote au serveur (fictif)
-            const photoId = currentIndex + 1;
-            console.log(`Voté pour la photo ${photoId}`);
+            // Ajoutez votre logique de vote ici
+            // Cette fonction doit être complétée avec la logique de vote appropriée
         }
     </script>
 </body>
 </html>
+
+
 
 #Serveur 
 # coding: utf-8
