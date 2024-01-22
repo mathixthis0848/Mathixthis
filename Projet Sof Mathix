@@ -197,7 +197,8 @@ import socket
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # Lier la socket à une adresse IP et un port
-server_socket.bind(('192.168.97.255', 9142))
+server_address = ('192.168.97.255', 9142)
+server_socket.bind(server_address)
 
 # Mettre la socket en mode écoute
 server_socket.listen(5)
@@ -207,13 +208,13 @@ try:
     while True:
         # Accepter la connexion du client
         client, address = server_socket.accept()
-        print("{} connected".format(address))
+        print("Connexion de {}".format(address))
 
         try:
             # Recevoir des données du client
-            response = client.recv(1024)
-            if response:
-                print(response.decode('utf-8'))
+            data = client.recv(1024)
+            if data:
+                print(data.decode('utf-8'))
         except socket.error as e:
             print("Erreur lors de la réception des données:", e)
         finally:
