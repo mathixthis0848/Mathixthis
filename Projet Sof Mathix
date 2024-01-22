@@ -189,7 +189,6 @@
 
 
 
-#Serveur 
 # coding: utf-8
 
 import socket
@@ -204,21 +203,28 @@ server_socket.bind(('192.168.97.255', 9142))
 server_socket.listen(5)
 print("Le serveur ecoute sur le port 9142...")
 
-while True:
-    # Accepter la connexion du client
-    client, address = server_socket.accept()
-    print("{} connected".format(address))
+try:
+    while True:
+        # Accepter la connexion du client
+        client, address = server_socket.accept()
+        print("{} connected".format(address))
 
-    try:
-        # Recevoir des données du client
-        response = client.recv(1024)
-        if response:
-            print(response.decode('utf-8'))
-    except socket.error as e:
-        print("Erreur lors de la réception des données:", e)
-    finally:
-        # Fermer la connexion avec le client
-        client.close()
+        try:
+            # Recevoir des données du client
+            response = client.recv(1024)
+            if response:
+                print(response.decode('utf-8'))
+        except socket.error as e:
+            print("Erreur lors de la réception des données:", e)
+        finally:
+            # Fermer la connexion avec le client
+            client.close()
+
+except KeyboardInterrupt:
+    print("\nArrêt du serveur.")
+finally:
+    # Fermer la socket du serveur
+    server_socket.close()
 
         
 #Client 
