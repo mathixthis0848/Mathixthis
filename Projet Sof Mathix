@@ -198,7 +198,7 @@ import socket
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # Lier la socket à une adresse IP et un port
-server_address = ('192.168.97.255', 9142)
+server_address = ('37.71.146.106', 9142)
 server_socket.bind(server_address)
 
 # Mettre la socket en mode écoute
@@ -228,7 +228,7 @@ finally:
     # Fermer la socket du serveur
     server_socket.close()
 
-#CHAT        
+#CHAT
 # coding: utf-8
 #!/usr/bin/env python3
 
@@ -237,7 +237,7 @@ import socket
 def send_message(message):
     try:
         # Connexion au serveur
-        with socket.create_connection(('192.168.97.255', 9142)) as client_socket:
+        with socket.create_connection((' 37.71.146.106', 9142)) as client_socket:
             print("Connecté au serveur.")
 
             # Envoyer des données au serveur
