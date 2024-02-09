@@ -135,6 +135,8 @@
                     <option value="person1">Personne 1</option>
                     <option value="person2">Personne 2</option>
                     <option value="person3">Personne 3</option>
+                    <option value="person3">Personne 4</option>
+                    <option value="person3">Personne 5</option>
                 </select>
                 <button onclick="vote()">Voter</button>
             </div>
@@ -186,6 +188,7 @@
     </script>
 </body>
 </html>
+
 
 
 
