@@ -5,37 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Arial', sans-serif; /* Définit la police de caractères pour le corps de la page */
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 100vh;
-            margin: 0;
-            background-image: url("../images/monimage.jpg");
-            color: #fff;
+            height: 100vh; /* Prend 100% de la hauteur de l'écran */
+            margin: 0; /* Supprime les marges par défaut */
+            background-color: #000 ; /* Définit une image de fond */
+            color: #fff; /* Définit la couleur du texte */
         }
 
+        /* Styles pour le conteneur de photos */
         #photo-container {
-            width: 500px;
-            height: 500px;
-            overflow: hidden;
+            width: 500px; /* Définit la largeur du conteneur de photos */
+            height: 500px; /* Définit la hauteur du conteneur de photos */
+            overflow: hidden; /* Cache le débordement des photos hors du conteneur */
             position: relative;
             border: 10px solid #82ccaa; /* Bordure apaisante en vert pastel */
             border-radius: 15px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Ajoute une ombre à la boîte */
         }
 
         #photo-list {
             display: flex;
-            transition: transform 1s ease-in-out;
+            transition: transform 1s ease-in-out; /* Ajoute une transition douce au déplacement des photos */
         }
 
         .photo {
-            width: 500px;
-            height: 500px;
-            flex-shrink: 0;
+            width: 500px; /* Définit la largeur des photos */
+            height: 500px; /* Définit la hauteur des photos */
+            flex-shrink: 0; /* Empêche les photos de rétrécir plus que leur taille initiale */
         }
 
+        /* Styles pour les boutons de navigation */
         #prev-btn, #next-btn, #vote-btn {
             position: absolute;
             cursor: pointer;
@@ -124,8 +126,7 @@
         <button id="prev-btn" onclick="prevPhoto()">Précédente</button>
         <button id="next-btn" onclick="nextPhoto()">Suivante</button>
         <button id="vote-btn" onclick="showVoteOptions()">Voter pour cette photo</button>
-
-        <!-- Ajout du modal dans le conteneur photo-container -->
+        
         <div id="vote-modal" class="modal">
             <div class="modal-content">
                 <span class="close" onclick="closeVoteModal()">&times;</span>
@@ -134,7 +135,6 @@
                     <option value="person1">Personne 1</option>
                     <option value="person2">Personne 2</option>
                     <option value="person3">Personne 3</option>
-                    <!-- Ajoutez d'autres options si nécessaire -->
                 </select>
                 <button onclick="vote()">Voter</button>
             </div>
@@ -186,6 +186,7 @@
     </script>
 </body>
 </html>
+
 
 
 #SERVEUR
