@@ -135,8 +135,6 @@
                     <option value="person1">Personne 1</option>
                     <option value="person2">Personne 2</option>
                     <option value="person3">Personne 3</option>
-                    <option value="person3">Personne 4</option>
-                    <option value="person3">Personne 5</option>
                 </select>
                 <button onclick="vote()">Voter</button>
             </div>
@@ -192,64 +190,86 @@
 
 
 
-#SERVEUR
-# coding: utf-8
-
+# PROF CLIENT CHAT
+# -*- coding: utf-8 -*- 
 import socket
 
-# Créer une socket
-server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+def start_client():
+    # Créer un socket IPv4 et TCP
+    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-# Lier la socket à une adresse IP et un port
-server_address = ('37.71.146.106', 9142)
-server_socket.bind(server_address)
+    # Connexion au serveur
+    server_address = ("127.0.0.1", 2948)  # Adresse IP et port du serveur
+    client_socket.connect(server_address)
 
-# Mettre la socket en mode écoute
-server_socket.listen(5)
-print("Le serveur ecoute sur le port 9142...")
-
-try:
-    while True:
-        # Accepter la connexion du client
-        client, address = server_socket.accept()
-        print("Connexion de {}".format(address))
-
-        try:
-            # Recevoir des données du client
-            data = client.recv(1024)
-            if data:
-                print(data.decode('utf-8'))
-        except socket.error as e:
-            print("Erreur lors de la réception des données:", e)
-        finally:
-            # Fermer la connexion avec le client
-            client.close()
-
-except KeyboardInterrupt:
-    print("\nArrêt du serveur.")
-finally:
-    # Fermer la socket du serveur
-    server_socket.close()
-
-#CHAT
-# coding: utf-8
-#!/usr/bin/env python3
-
-import socket
-
-def send_message(message):
     try:
-        # Connexion au serveur
-        with socket.create_connection((' 37.71.146.106', 9142)) as client_socket:
-            print("Connecté au serveur.")
+        # Boucle pour envoyer et recevoir des messages
+        while True:
+            # Envoyer un message au serveur
+            message = input("You: ")
+            client_socket.send(message.encode('utf-8'))
 
-            # Envoyer des données au serveur
-            client_socket.sendall(message.encode('utf-8'))
-            print("Message envoyé avec succès.")
+            # Recevoir la réponse du serveur
+            response = client_socket.recv(1024)
+            print("Server says:", response.decode('utf-8'))
 
-    except ConnectionError as e:
-        print("Erreur de connexion au serveur:", e)
+    except KeyboardInterrupt:
+        print("Closing connection.")
+        client_socket.close()
 
 if __name__ == "__main__":
-    message_to_send = "Hello, serveur!"
-    send_message(message_to_send)
+    start_client()
+    
+    
+# PROF SERVEUR CHAT    
+# -*- coding: utf-8 -*-
+import socket
+
+def handle_client(client_socket):
+    while True:
+        try:
+            # Recevoir les données du client
+            data = client_socket.recv(1024)
+            if not data:
+                print("Client disconnected")
+                # Envoyer un message au client pour indiquer qu'il est déconnecté
+                client_socket.send("Vous êtes déconnecté.".encode('utf-8'))
+                break
+
+            # Afficher les données reçues
+            print("Client says:", data.decode('utf-8'))
+
+            # Envoyer une réponse
+            response = input("You: ")
+            client_socket.send(response.encode('utf-8'))
+        except Exception as e:
+            print("Erreur:", e)
+            break
+
+    # Fermer la connexion avec le client
+    client_socket.close()
+
+def start_server():
+    # Recuperation de l'adresse IP du serveur
+    # IP = socket.gethostbyname(socket.gethostname())
+    # Créer un socket IPv4 et TCP
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+    # Lier le socket à une adresse et un port dynamique (supérieur à 49152)
+    server_socket.bind(("127.0.0.1", 2948))
+
+    # Écouter les connexions entrantes
+    server_socket.listen(5)
+    print("Server listening on port 2948")
+    print("Communiquer l'adresse du serveur au client :", "127.0.0.1")
+
+    while True:
+        # Accepter la connexion du client
+        client_socket, addr = server_socket.accept()
+        print("Accepted connection from {}".format(addr))
+
+        # Gérer le client
+        handle_client(client_socket)
+
+if __name__ == "__main__":
+    start_server()
