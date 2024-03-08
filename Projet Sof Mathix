@@ -142,48 +142,60 @@
     </div>
 
     <script>
-        const photoContainer = document.getElementById('photo-container');
-        const photoList = document.getElementById('photo-list');
-        const prevBtn = document.getElementById('prev-btn');
-        const nextBtn = document.getElementById('next-btn');
-        const voteBtn = document.getElementById('vote-btn');
+    // Récupérer l'élément contenant les photos
+    const photoContainer = document.getElementById('photo-container');
+    // Récupérer la liste des photos
+    const photoList = document.getElementById('photo-list');
+    // Récupérer le bouton précédent
+    const prevBtn = document.getElementById('prev-btn');
+    // Récupérer le bouton suivant
+    const nextBtn = document.getElementById('next-btn');
+    // Récupérer le bouton de vote
+    const voteBtn = document.getElementById('vote-btn');
 
-        let currentIndex = 0;
+    // Variable pour suivre l'indice de la photo actuellement affichée
+    let currentIndex = 0;
 
-        function prevPhoto() {
-            currentIndex = (currentIndex - 1 + photoList.children.length) % photoList.children.length;
-            updatePhotoList();
-        }
+    // Fonction pour afficher la photo précédente
+    function prevPhoto() {
+        currentIndex = (currentIndex - 1 + photoList.children.length) % photoList.children.length;
+        updatePhotoList();
+    }
 
-        function nextPhoto() {
-            currentIndex = (currentIndex + 1) % photoList.children.length;
-            updatePhotoList();
-        }
+    // Fonction pour afficher la photo suivante
+    function nextPhoto() {
+        currentIndex = (currentIndex + 1) % photoList.children.length;
+        updatePhotoList();
+    }
 
-        function updatePhotoList() {
-            const newPosition = -currentIndex * photoContainer.clientWidth;
-            photoList.style.transform = `translateX(${newPosition}px)`;
-        }
+    // Fonction pour mettre à jour l'affichage de la liste de photos
+    function updatePhotoList() {
+        const newPosition = -currentIndex * photoContainer.clientWidth;
+        photoList.style.transform = `translateX(${newPosition}px)`;
+    }
 
-        function showVoteOptions() {
-            // Afficher la boîte de dialogue (modal)
-            document.getElementById('vote-modal').style.display = 'block';
-            // Masquer le bouton "Voter pour cette photo"
-            document.getElementById('vote-btn').style.display = 'none';
-        }
+    // Fonction pour afficher les options de vote
+    function showVoteOptions() {
+        // Afficher la boîte de dialogue (modal) pour le vote
+        document.getElementById('vote-modal').style.display = 'block';
+        // Masquer le bouton "Voter pour cette photo"
+        document.getElementById('vote-btn').style.display = 'none';
+    }
 
-        function closeVoteModal() {
-            // Fermer la boîte de dialogue (modal)
-            document.getElementById('vote-modal').style.display = 'none';
-            // Afficher à nouveau le bouton "Voter pour cette photo"
-            document.getElementById('vote-btn').style.display = 'block';
-        }
+    // Fonction pour fermer la boîte de dialogue modale de vote
+    function closeVoteModal() {
+        // Fermer la boîte de dialogue (modal) pour le vote
+        document.getElementById('vote-modal').style.display = 'none';
+        // Afficher à nouveau le bouton "Voter pour cette photo"
+        document.getElementById('vote-btn').style.display = 'block';
+    }
 
-        function vote() {
-            // Ajoutez votre logique de vote ici
-            // Cette fonction doit être complétée avec la logique de vote appropriée
-        }
-    </script>
+    // Fonction pour gérer le vote
+    function vote() {
+        // Ajoutez votre logique de vote ici
+        // Cette fonction doit être complétée avec la logique de vote appropriée
+    }
+</script>
 </body>
 </html>
 
