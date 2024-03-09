@@ -239,7 +239,6 @@
         }
 
         // Fonction pour gérer le vote
-        // Fonction pour gérer le vote
     function vote() {
         // Récupérer l'option sélectionnée dans le menu déroulant
         const selectedOption = document.getElementById('vote-options').value;
