@@ -5,36 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {
-            font-family: 'Arial', sans-serif; /* Définit la police de caractères pour le corps de la page */
+            font-family: 'Arial', sans-serif;
             display: flex;
+            flex-direction: column; /* Pour aligner les éléments verticalement */
             align-items: center;
             justify-content: center;
-            height: 100vh; /* Prend 100% de la hauteur de l'écran */
-            margin: 0; /* Supprime les marges par défaut */
-            background-color: #000 ; /* Définit une image de fond */
-            color: #fff; /* Définit la couleur du texte */
+            height: 100vh;
+            margin: 0;
+            background-color: #000;
+            color: #fff;
         }
 
         /* Styles pour le conteneur de photos */
         #photo-container {
-            width: 500px; /* Définit la largeur du conteneur de photos */
-            height: 500px; /* Définit la hauteur du conteneur de photos */
-            overflow: hidden; /* Cache le débordement des photos hors du conteneur */
+            width: 500px;
+            height: 500px;
+            overflow: hidden;
             position: relative;
-            border: 10px solid #82ccaa; /* Bordure apaisante en vert pastel */
+            border: 10px solid #82ccaa;
             border-radius: 15px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Ajoute une ombre à la boîte */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            margin-bottom: 20px; /* Ajoute un espace en bas du conteneur */
         }
 
         #photo-list {
             display: flex;
-            transition: transform 1s ease-in-out; /* Ajoute une transition douce au déplacement des photos */
+            transition: transform 1s ease-in-out;
         }
 
         .photo {
-            width: 500px; /* Définit la largeur des photos */
-            height: 500px; /* Définit la hauteur des photos */
-            flex-shrink: 0; /* Empêche les photos de rétrécir plus que leur taille initiale */
+            width: 500px;
+            height: 500px;
+            flex-shrink: 0;
         }
 
         /* Styles pour les boutons de navigation */
@@ -51,11 +53,11 @@
             top: 50%;
             color: #fff;
             padding: 8px 12px;
-            background-color: #82ccaa; /* Vert pastel */
+            background-color: #82ccaa;
         }
 
         #prev-btn:hover, #next-btn:hover {
-            background-color: #5a9c7e; /* Vert pastel plus foncé au survol */
+            background-color: #5a9c7e;
         }
 
         #prev-btn {
@@ -67,16 +69,16 @@
         }
 
         #vote-btn {
-            top: 80%;
+            bottom: 20px; /* Placer le bouton en bas */
             left: 50%;
             transform: translateX(-50%);
             color: #fff;
             padding: 10px 20px;
-            background-color: #82ccaa; /* Vert pastel */
+            background-color: #82ccaa;
         }
 
         #vote-btn:hover {
-            background-color: #5a9c7e; /* Vert pastel plus foncé au survol */
+            background-color: #5a9c7e;
         }
 
         /* Styles pour le modal */
@@ -107,39 +109,41 @@
             color: #fff;
             cursor: pointer;
         }
+
+        /* Style pour l'élément input de type fichier */
+        #file-input {
+            position: absolute;
+            bottom: 50px; /* Placer l'élément en bas */
+            left: 50%;
+            transform: translateX(-50%);
+        }
     </style>
 </head>
 <body>
     <div id="photo-container">
         <div id="photo-list">
-            <img class="photo" src="image1.jpg" alt="Photo 1">
-            <img class="photo" src="image2.jpg" alt="Photo 2">
-            <img class="photo" src="image3.jpg" alt="Photo 3">
-            <img class="photo" src="image4.jpg" alt="Photo 4">
-            <img class="photo" src="image5.jpg" alt="Photo 5">
-            <img class="photo" src="image6.jpg" alt="Photo 6">
-            <img class="photo" src="image7.jpg" alt="Photo 7">
-            <img class="photo" src="image8.jpg" alt="Photo 8">
-            <img class="photo" src="image9.jpg" alt="Photo 9">
-            <img class="photo" src="image10.jpg" alt="Photo 10">
+            <!-- Images ici -->
         </div>
         <button id="prev-btn" onclick="prevPhoto()">Précédente</button>
         <button id="next-btn" onclick="nextPhoto()">Suivante</button>
         <button id="vote-btn" onclick="showVoteOptions()">Voter pour cette photo</button>
-        
-        <div id="vote-modal" class="modal">
-            <div class="modal-content">
-                <span class="close" onclick="closeVoteModal()">&times;</span>
-                <h2>Choisissez une personne</h2>
-                <select id="vote-options">
-                    <option value="person1">Personne 1</option>
-                    <option value="person2">Personne 2</option>
-                    <option value="person3">Personne 3</option>
-                </select>
-                <button onclick="vote()">Voter</button>
-            </div>
+    </div>
+    <!-- Input type file ici -->
+    <input type="file" id="file-input" accept="image/*" multiple>
+    
+    <div id="vote-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeVoteModal()">&times;</span>
+            <h2>Choisissez une personne</h2>
+            <select id="vote-options">
+                <option value="la personne 1">Personne 1</option>
+                <option value="la personne 2">Personne 2</option>
+                <option value="la personne 3">Personne 3</option>
+            </select>
+            <button onclick="vote()">Voter</button>
         </div>
     </div>
+
 
     <script>
     // Récupérer l'élément contenant les photos
@@ -152,52 +156,104 @@
     const nextBtn = document.getElementById('next-btn');
     // Récupérer le bouton de vote
     const voteBtn = document.getElementById('vote-btn');
+    
+    // Récupérer l'élément d'entrée de fichier
+    const fileInput = document.getElementById('file-input');
 
-    // Variable pour suivre l'indice de la photo actuellement affichée
-    let currentIndex = 0;
+    // Écouter les changements dans l'entrée de fichier
+    fileInput.addEventListener('change', handleFiles);
 
-    // Fonction pour afficher la photo précédente
-    function prevPhoto() {
-        currentIndex = (currentIndex - 1 + photoList.children.length) % photoList.children.length;
+    // Fonction pour gérer les fichiers sélectionnés
+    function handleFiles() {
+        const files = fileInput.files; // Récupérer les fichiers sélectionnés
+        const photoList = document.getElementById('photo-list');
+
+        // Supprimer toutes les images existantes dans la liste de photos
+        while (photoList.firstChild) {
+            photoList.removeChild(photoList.firstChild);
+        }
+
+        // Parcourir les fichiers et les ajouter comme des éléments img dans la liste de photos
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            const reader = new FileReader();
+    
+            // Lorsque le lecteur termine la lecture du fichier
+            reader.onload = function(event) {
+                const img = new Image();
+                img.src = event.target.result; // Définit la source de l'image comme l'URL des données du fichier
+                img.alt = file.name; // Utilise le nom du fichier comme attribut alt
+                img.classList.add('photo'); // Ajoute la classe photo à l'image
+
+                // Ajoute l'image à la liste de photos
+                photoList.appendChild(img);
+            };
+
+            // Lire le fichier en tant que URL de données
+            reader.readAsDataURL(file);
+        }
+
+        // Réinitialiser l'indice de la photo actuellement affichée
+        currentIndex = 0;
+        // Mettre à jour l'affichage de la liste de photos
         updatePhotoList();
-    }
+}
 
-    // Fonction pour afficher la photo suivante
-    function nextPhoto() {
-        currentIndex = (currentIndex + 1) % photoList.children.length;
+
+
+        // Variable pour suivre l'indice de la photo actuellement affichée
+        let currentIndex = 0;
+
+        // Fonction pour afficher la photo précédente
+        function prevPhoto() {
+            currentIndex = (currentIndex - 1 + photoList.children.length) % photoList.children.length;
+            updatePhotoList();
+        }
+
+        // Fonction pour afficher la photo suivante
+        function nextPhoto() {
+            currentIndex = (currentIndex + 1) % photoList.children.length;
         updatePhotoList();
-    }
+        }
+    
+        // Fonction pour mettre à jour l'affichage de la liste de photos
+        function updatePhotoList() {
+            const newPosition = -currentIndex * photoContainer.clientWidth;
+            photoList.style.transform = `translateX(${newPosition}px)`;
+        }
 
-    // Fonction pour mettre à jour l'affichage de la liste de photos
-    function updatePhotoList() {
-        const newPosition = -currentIndex * photoContainer.clientWidth;
-        photoList.style.transform = `translateX(${newPosition}px)`;
-    }
+        // Fonction pour afficher les options de vote
+        function showVoteOptions() {
+            // Afficher la boîte de dialogue (modal) pour le vote
+            document.getElementById('vote-modal').style.display = 'block';
+            // Masquer le bouton "Voter pour cette photo"
+            document.getElementById('vote-btn').style.display = 'none';
+        }
 
-    // Fonction pour afficher les options de vote
-    function showVoteOptions() {
-        // Afficher la boîte de dialogue (modal) pour le vote
-        document.getElementById('vote-modal').style.display = 'block';
-        // Masquer le bouton "Voter pour cette photo"
-        document.getElementById('vote-btn').style.display = 'none';
-    }
+        // Fonction pour fermer la boîte de dialogue modale de vote
+        function closeVoteModal() {
+            // Fermer la boîte de dialogue (modal) pour le vote
+            document.getElementById('vote-modal').style.display = 'none';
+            // Afficher à nouveau le bouton "Voter pour cette photo"
+            document.getElementById('vote-btn').style.display = 'block';
+        }
 
-    // Fonction pour fermer la boîte de dialogue modale de vote
-    function closeVoteModal() {
-        // Fermer la boîte de dialogue (modal) pour le vote
-        document.getElementById('vote-modal').style.display = 'none';
-        // Afficher à nouveau le bouton "Voter pour cette photo"
-        document.getElementById('vote-btn').style.display = 'block';
-    }
-
-    // Fonction pour gérer le vote
+        // Fonction pour gérer le vote
+        // Fonction pour gérer le vote
     function vote() {
-        // Ajoutez votre logique de vote ici
-        // Cette fonction doit être complétée avec la logique de vote appropriée
+        // Récupérer l'option sélectionnée dans le menu déroulant
+        const selectedOption = document.getElementById('vote-options').value;
+        // Afficher un message indiquant que l'utilisateur a voté
+        alert("Vous avez voté pour " + selectedOption);
     }
+    
+    
+    
+
 </script>
 </body>
 </html>
+
 
 
 
@@ -231,9 +287,10 @@ def start_client():
 
 if __name__ == "__main__":
     start_client()
+
     
     
-# PROF SERVEUR CHAT    
+# PROF SERV CHAT
 # -*- coding: utf-8 -*-
 import socket
 
@@ -262,8 +319,6 @@ def handle_client(client_socket):
     client_socket.close()
 
 def start_server():
-    # Recuperation de l'adresse IP du serveur
-    # IP = socket.gethostbyname(socket.gethostname())
     # Créer un socket IPv4 et TCP
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -285,3 +340,4 @@ def start_server():
 
 if __name__ == "__main__":
     start_server()
+
